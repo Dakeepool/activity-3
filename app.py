@@ -4,10 +4,23 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
+from streamlit.errors import StreamlitSecretNotFoundError
 
 from explainer import DEFAULT_MODEL, explain_algorithm
 
 load_dotenv(Path(__file__).with_name('.env'))
+
+
+def get_huggingface_api_key() -> str:
+    api_key = os.getenv('HUGGINGFACE_API_KEY') or os.getenv('HF_TOKEN', '')
+    if api_key.strip():
+        return api_key.strip()
+    try:
+        secrets = st.secrets
+        return str(secrets.get('HUGGINGFACE_API_KEY') or secrets.get('HF_TOKEN') or '').strip()
+    except (FileNotFoundError, StreamlitSecretNotFoundError):
+        return ''
+
 
 EXAMPLES = {
     'Search: Binary search': '''def binary_search(values, target):
@@ -683,7 +696,7 @@ with left:
             with st.spinner('Generating explanation with Hugging Face...'):
                 st.session_state['explanation'] = explain_algorithm(
                     source_text,
-                    os.getenv('HUGGINGFACE_API_KEY') or os.getenv('HF_TOKEN', ''),
+                    get_huggingface_api_key(),
                     model,
                 )
             st.session_state.pop('explanation_error', None)

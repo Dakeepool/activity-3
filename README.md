@@ -45,6 +45,6 @@ pytest -q
 
 7. **Testing and iteration:** Run `pytest -q`. The four tests cover automatic Hugging Face provider selection, missing API credentials, empty input, and provider errors. The algorithm examples are also checked for syntax and dropdown loading.
 
-8. **Deployment:** Deploy `app.py` to Streamlit Community Cloud, install dependencies from `requirements.txt`, and set `HUGGINGFACE_API_KEY` in the app's Secrets settings. Keep `.env` private. Include `data/ai4i2020.csv` in the deployed repository so the dataset table can load.
+8. **Deployment:** In Streamlit Community Cloud, create an app from repository `XueShadow/dakee`, branch `main`, with `app.py` as the main file. Dependencies come from `requirements.txt`. Add `HUGGINGFACE_API_KEY` (and optionally `HUGGINGFACE_MODEL`) in the app's Secrets settings. The app reads these secrets directly. Keep `.env` private and include `data/ai4i2020.csv` in the repository so the dataset table can load.
 
 9. **Next goals:** Add filters by product type and failure mode, charts for failure rates and operating measurements, and dataset-aware GenAI analysis grounded in selected rows. A chatbot could answer questions about the dataset using retrieved records as context.
